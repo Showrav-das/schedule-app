@@ -4,7 +4,6 @@ import { useNextCalendarApp, ScheduleXCalendar } from "@schedule-x/react";
 import {
   createViewMonthAgenda,
   createViewMonthGrid,
-  createViewWeek,
 } from "@schedule-x/calendar";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
 import { createEventModalPlugin } from "@schedule-x/event-modal";
@@ -25,39 +24,12 @@ function CalendarApp({ setCalendarOpen, calendarOpen }: any) {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const calendar = useNextCalendarApp({
-    views: [createViewWeek(), createViewMonthGrid(), createViewMonthAgenda()],
+    views: [createViewMonthGrid(), createViewMonthAgenda()],
     events: [],
     plugins: [
       eventsService,
       createEventModalPlugin(),
-      createDragAndDropPlugin({
-        onEventDrop: async (droppedEvent: {
-          id: string;
-          start: string;
-          end: string;
-        }) => {
-          try {
-            // Update the event in your backend
-            await fetch(`http://localhost:8000/tasks/${droppedEvent.id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                start: droppedEvent.start,
-                end: droppedEvent.end,
-              }),
-            });
-
-            // The calendar automatically updates the UI through the events service
-            console.log("Event moved successfully");
-          } catch (error) {
-            console.error("Error updating event:", error);
-            // Revert the change if the API call fails
-            eventsService.set([...eventsService.getAll()]);
-          }
-        },
-      } as unknown as number),
+      createDragAndDropPlugin(),
     ],
     callbacks: {
       onRender: () => {

@@ -1,46 +1,18 @@
 {
   "tasks": [
     {
-      "id": "5299",
-      "title": "schedulle",
-      "description": "schedulle",
-      "start": "2025-04-11",
-      "end": "2025-04-11"
+      "id": "df9c",
+      "title": "task 1",
+      "description": "short description",
+      "start": "2025-04-09",
+      "end": "2025-04-09"
     },
     {
-      "id": "a333",
-      "title": "title 10",
-      "description": "details 10",
-      "start": "2025-04-10",
-      "end": "2025-04-10"
-    },
-    {
-      "id": "9560",
-      "title": "16",
-      "description": "16",
-      "start": "2025-04-16",
-      "end": "2025-04-16"
-    },
-    {
-      "id": "b8b7",
-      "title": "ss",
-      "description": "ss",
-      "start": "2025-04-17",
-      "end": "2025-04-17"
-    },
-    {
-      "id": "e0ad",
-      "title": "10",
-      "description": "",
-      "start": "2025-04-10",
-      "end": "2025-04-10"
-    },
-    {
-      "id": "3a89",
-      "title": "18",
-      "description": "",
-      "start": "2025-04-18",
-      "end": "2025-04-18"
+      "id": "caff",
+      "title": "title 2",
+      "description": "Lorem Ipsum is simply dummy text.",
+      "start": "2025-04-12",
+      "end": "2025-04-12"
     }
   ]
 }
