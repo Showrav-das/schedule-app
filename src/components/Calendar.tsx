@@ -16,13 +16,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useDeleteTaskMutation } from "@/app/services/jsonServiceApi";
 
 function CalendarApp({ setCalendarOpen, calendarOpen }: any) {
   const [eventsService] = useState(() => createEventsServicePlugin());
   const [date, setDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-
+  const [deleteTask] = useDeleteTaskMutation();
   const calendar = useNextCalendarApp({
     views: [createViewMonthGrid(), createViewMonthAgenda()],
     events: [],
@@ -39,6 +40,18 @@ function CalendarApp({ setCalendarOpen, calendarOpen }: any) {
         console.log("Clicked date:", clickedDate);
         setDate(clickedDate);
         setCalendarOpen(true);
+      },
+      onEventClick: async (event) => {
+        const confirmDelete = window.confirm(`Delete "${event.title}"?`);
+        if (confirmDelete) {
+          try {
+            await deleteTask({ id: event.id }).unwrap(); // delete from backend
+            eventsService.remove(event.id); // remove from calendar
+            setRefreshTrigger((prev) => prev + 1); // re-fetch events
+          } catch (err) {
+            console.error("Error deleting event:", err);
+          }
+        }
       },
     },
   });
