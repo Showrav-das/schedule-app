@@ -10,7 +10,9 @@ interface Task {
 export const jsonServerApi = createApi({
   tagTypes: ["Tasks"],
   reducerPath: "jsonServerApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://json-server-ucec.onrender.com/",
+  }),
   endpoints: (builder) => ({
     tasks: builder.query<Task, void>({
       query: () => "/tasks",
@@ -27,7 +29,7 @@ export const jsonServerApi = createApi({
     }),
     updateTask: builder.mutation({
       query: (updatedTask) => ({
-        url: `/task/${updatedTask.id}`,
+        url: `/tasks/${updatedTask.id}`,
         method: "PUT",
         body: updatedTask,
       }),

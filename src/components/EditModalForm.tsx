@@ -15,54 +15,32 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 
 interface taskProps {
-  date: string;
-  setCalendarOpen: (calendarOpen: boolean) => void;
-  onEventCreated: () => void;
-  onEventUpdate?: (updatedTask: any) => void;
-  selectedEvent?: any;
+  selectedEvent: any;
 }
 
-export default function TaskForm({
-  date,
-  setCalendarOpen,
-  onEventCreated,
-  onEventUpdate,
-  selectedEvent,
-}: taskProps) {
-  const [addTask] = useAddTaskMutation();
+export default function EditModalForm({ selectedEvent }: taskProps) {
   const [updateTask] = useUpdateTaskMutation();
   const form = useForm({
     defaultValues: {
-      title: selectedEvent?.title || "",
-      description: selectedEvent?.description || "",
-      start: date,
-      end: date,
+      title: selectedEvent.title,
+      description: selectedEvent.description,
+      start: selectedEvent.date,
+      end: selectedEvent.date,
     },
   });
+  console.log(selectedEvent, "selectedEvent");
+  async function onSubmit(tasks: {}) {
+    const allTasks = {
+      ...tasks,
+      id: selectedEvent.id,
+      start: selectedEvent.start,
+      end: selectedEvent.end,
+    };
+    await updateTask(allTasks).unwrap();
 
-  async function onSubmit(tasks: any) {
-    if (selectedEvent) {
-      // If we're editing an event, update the event
-      await updateTask({
-        ...tasks,
-        id: selectedEvent.id, // Include the event ID to update the correct event
-      });
-      console.log("tasj", tasks);
-      // Notify that the event has been updated
-      if (onEventUpdate) {
-        onEventUpdate({
-          ...selectedEvent,
-          ...tasks, // Update with form data
-        });
-      }
-    } else {
-      // If we're creating a new event, add it
-      await addTask(tasks);
-      onEventCreated(); // Trigger the callback to re-fetch or refresh events
-    }
+    console.log("tasks", tasks);
 
-    setCalendarOpen(false);
-    form.reset();
+    // form.reset();
   }
 
   return (
@@ -99,7 +77,12 @@ export default function TaskForm({
             <FormItem>
               <FormLabel>Date</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} disabled value={date} />
+                <Input
+                  placeholder="shadcn"
+                  {...field}
+                  disabled
+                  value={selectedEvent.start}
+                />
               </FormControl>
             </FormItem>
           )}
